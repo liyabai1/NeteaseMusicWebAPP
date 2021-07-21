@@ -2,15 +2,15 @@
   <div class="privaFmBox" :key="this.$store.state.privatefm[0].id">
     <div class="ablumImgBox">
       <div class="fmPlayingBtn">
-        <i v-if="fmplaying" class="iconfont">&#xe633;</i>
-        <i v-else class="iconfont">&#xe601;</i>
+        <i v-if="fmplaying" class="iconfont" @click="FMPause()">&#xe633;</i>
+        <i v-else class="iconfont" @click="FMPlaying()">&#xe601;</i>
       </div>
       <img
         :src="this.$store.state.privatefm[0].album.picUrl + '?param=300y300'"
       />
       <div class="btns">
-        <i class="iconfont">&#xe631;</i>
-        <i class="iconfont">&#xe62c;</i>
+        <!-- <i class="iconfont">&#xe631;</i> -->
+        <i class="iconfont" @click="next()">&#xe62c;</i>
       </div>
     </div>
     <div class="lyricBox">
@@ -39,9 +39,7 @@
 import LrcBox from "@/components/LyricBox.vue";
 export default {
   data() {
-    return {
-      fmplaying: false,
-    };
+    return {};
   },
   components: {
     LrcBox,
@@ -57,9 +55,27 @@ export default {
       this.$store.dispatch("getFmdata");
     }
   },
+  methods: {
+    // 播放私人FM
+    FMPlaying() {
+      // 播放私人FM歌曲数组的第一个
+      this.$store.commit("playFMAudioMut");
+    },
+    // 暂停FM
+    FMPause() {
+      this.$store.commit("pauseFMAudioMut");
+    },
+    // 下一曲
+    next() {
+      this.$store.dispatch("nextFM");
+    },
+  },
   computed: {
     prifmdata() {
       return this.$store.state.userInfo.isLogin;
+    },
+    fmplaying() {
+      return this.$store.state.FMAudio.playing;
     },
   },
   watch: {

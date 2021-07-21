@@ -99,7 +99,6 @@ export default new Vuex.Store({
 
     // 获取私人FM歌词信息
     fmdatalrcMut(state, data) {
-      console.log(data)
       for (const item of state.privatefm) {
         if (item.id === data.id) {
           item.lrcId = data.id
@@ -161,6 +160,33 @@ export default new Vuex.Store({
         nowindex !== 0 ? index = --nowindex : index = state.GlobalAudio.songList.length - 1
       }
       state.GlobalAudio.songPlayingData = state.GlobalAudio.songList[index]
+    },
+
+
+    // 播放私人FM
+    playFMAudioMut(state) {
+      //暂停GlobalAudio的音频
+      state.GlobalAudio.pause();
+
+      // 播放私人Fm的第一个数组
+      // 判断当前私人FM是否有正在播放的歌曲，判断当前FM的是否存在playingId
+      if (state.FMAudio.playingId) {
+        state.FMAudio.play()
+      } else {
+        state.FMAudio.play(state.privatefm[0].id)
+      }
+    },
+
+    // 暂停播放私人FM
+    pauseFMAudioMut(state) {
+      // 暂停播放私人FM
+      state.FMAudio.pause()
+    },
+
+    // 删除第一个私人播放FM
+    delFMFirstSong(state) {
+      state.privatefm.shift();
+      state.FMAudio.playingId = null
     }
   },
   actions: {
@@ -235,10 +261,24 @@ export default new Vuex.Store({
             } else {
               lrc = res.data.lrc.lyric
             }
+            console.log(lrc)
             store.commit('fmdatalrcMut', { lrc, id: item.id })
           })
         }
       })
+    },
+
+    nextFM(store) {
+      // 删除播放过的第一个数组
+      store.commit('delFMFirstSong')
+
+      // 判断当前的FM数组长度是否小于等于1
+      if (store.state.privatefm.length <= 1) {
+        // 开始搜索FM数据
+        store.dispatch("getFmdata");
+      }
+      // 开始播放
+      store.commit("playFMAudioMut");
     },
 
     /**

@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Find from '@/views/Find.vue' // 发现音乐
 import Recommend from '@/views/find/recommend/Recommend.vue' // 个性推荐页
 import Customers from '@/views/find/customers/Customers.vue' // 专属定制
-import Musiclist from '@/views/find/musiclist/Musiclist.vue' // 歌单
+// import Musiclist from '@/views/find/musiclist/Musiclist.vue' // 歌单
 import Rank from '@/views/find/rank/Rank.vue' // 排行榜
 import NewMusic from '@/views/find/newmusic/NewMusic.vue' // 最近音乐
 

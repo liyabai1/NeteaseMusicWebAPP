@@ -60,6 +60,7 @@ export default {
   },
   mounted() {
     setInterval(this.getPlayedTime, 500);
+    
   },
   methods: {
     getPlayedTime() {
@@ -76,22 +77,26 @@ export default {
     },
     // 播放
     play() {
+      // 暂停私人FM歌曲
+      this.$store.state.FMAudio.pause();
+      // 播放全局音乐
       this.$store.state.GlobalAudio.play();
     },
     // 上一首
     preSong() {
       let id = this.$store.state.GlobalAudio.playingId;
       this.$store.state.GlobalAudio.preSong(id);
-      // 改变当前播放的信息
+      // 改变当前播放的信息 页面显示
       this.$store.commit("changeNowMusicInfo", { id, type: "pre" });
     },
     // 下一首
     nextSong() {
       let id = this.$store.state.GlobalAudio.playingId;
       this.$store.state.GlobalAudio.nextSong(id);
-      // 改变当前播放的信息
+      // 改变当前播放的信息 页面显示
       this.$store.commit("changeNowMusicInfo", { id, type: "next" });
     },
+    
   },
   filters: {
     changeTime: function (time) {

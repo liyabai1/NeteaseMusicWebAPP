@@ -4,7 +4,12 @@
       <p>手机号：</p>
       <input type="text" placeholder="请输入手机号" v-model.number="phone" />
       <p>密码：</p>
-      <input type="password" placeholder="请输入密码" v-model="password" />
+      <input
+        type="password"
+        placeholder="请输入密码"
+        v-model="password"
+        @keydown.enter="login"
+      />
       <div>
         <button type="button" @click="login">登录</button>
         <button type="button" @click="cancelLogin">取消</button>
@@ -14,36 +19,36 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      phone: '',
-      password: ''
-    }
+      phone: "",
+      password: "",
+    };
   },
   methods: {
     // 取消登录 ==> 关闭登录弹窗
-    cancelLogin () {
-      this.$store.commit('login', false)
+    cancelLogin() {
+      this.$store.commit("login", false);
     },
     // 登录
-    login () {
+    login() {
       if (this.phone && this.password) {
-        if (typeof this.phone === 'string') {
-          alert('请检查手机号格式')
+        if (typeof this.phone === "string") {
+          alert("请检查手机号格式");
         } else {
-          const _this = this
+          const _this = this;
           const data = {
             phone: _this.phone,
-            password: _this.password
-          }
-          this.$store.dispatch('getUserInfo', data)
+            password: _this.password,
+          };
+          this.$store.dispatch("getUserInfo", data);
         }
       } else {
-        alert('请检查信息是否输入完整')
+        alert("请检查信息是否输入完整");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .loginBox {

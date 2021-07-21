@@ -1,5 +1,5 @@
 class Aplayer {
-  constructor() {
+  constructor(type) {
     this.audio = new Audio()
     this.audio.autoplay = true
     this.audio.volume = 0.5
@@ -12,7 +12,14 @@ class Aplayer {
       songImgUrl: "",
       songId: 0
     } // 当前播放歌曲的信息
-    this.playing = false // 播放状态 true 正在播放 false 暂停
+    this.playing = false // 播放状态 true 正在播放 false 暂停  主要用于图标显示
+    this.audio.onended = function () {
+      this.playing = false
+    }
+    this.audio.playing = function () {
+      this.playing = true
+    }
+    this.type = type || null    // 播放来源 全局为null  fm为fm
   }
 
   /**
@@ -117,7 +124,13 @@ class Aplayer {
     console.log(index)
     return index
   }
-
+  /**
+   * 获取当前的播放时间
+   * @return {number} currentTime 
+   */
+  getCurrentTime() {
+    return this.audio.currentTime
+  }
   /**
    * 获取播放状态 true 正在播放 false 暂停状态
    */
@@ -127,4 +140,4 @@ class Aplayer {
   }
 }
 export const GAUDIO = new Aplayer() // 全局的音乐播放器
-export const FAUDIO = new Aplayer() // 私人FM播放器
+export const FAUDIO = new Aplayer("fm") // 私人FM播放器
