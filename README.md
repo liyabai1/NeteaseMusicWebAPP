@@ -64,7 +64,7 @@ npm run bulid
 
 
 ## 更新日志
-暂无
+**2021.07.21**  添加了私人FM模块
 
 ## License
 [The MIT License (MIT)](https://github.com/liyabai1/NeteaseMusicWebAPP/blob/main/LICENSE)
