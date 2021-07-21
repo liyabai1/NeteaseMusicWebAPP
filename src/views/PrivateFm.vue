@@ -25,6 +25,7 @@
           <span>{{ this.$store.state.privatefm[0].artists[0].name }}</span>
         </p>
       </div>
+      <div class="topLine"></div>
       <div class="lycContainer" :key="this.$store.state.privatefm[0].length">
         <lrc-box
           :key="this.$store.state.privatefm[0].lrcId"
@@ -32,6 +33,7 @@
           :lrc="this.$store.state.privatefm[0].lrc"
         ></lrc-box>
       </div>
+      <div class="bottomLine"></div>
     </div>
   </div>
 </template>
@@ -167,6 +169,16 @@ export default {
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
+    }
+    .topLine {
+      height: 2px;
+      width: 100%;
+      box-shadow: 0px 5px 6px 0px;
+    }
+    .bottomLine {
+      height: 2px;
+      width: 100%;
+      box-shadow: 0px -5px 6px 0px;
     }
   }
 }

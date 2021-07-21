@@ -56,6 +56,10 @@ export default {
     var _this = this;
     this.$store.state.FMAudio.audio.onended = this.FMnext;
   },
+  beforeDestroy() {
+    // 清除ontimeupdate事件
+    this.$store.state.FMAudio.audio.ontimeupdate = null;
+  },
   methods: {
     filterLrc(lrc) {
       if (lrc === "暂无歌词") {
@@ -65,7 +69,7 @@ export default {
     },
     // 歌词滚动
     goLrc() {
-      console.log("zhengzaibofang")
+      console.log("正在播放");
       let currentTime = this.$store.state.FMAudio.getCurrentTime();
       let lrcBox = this.$refs.lrcBox;
       let lrcArr = this.$store.state.privatefm[0].lrc;
@@ -78,16 +82,16 @@ export default {
       // 获取当前已经有多少歌词被播放了，将最后播放的那句歌词显示出来
       let filterLrc = lrcArr.filter((item) => currentTime >= item.sec);
       let index = filterLrc.length;
-
-      lrcBox.children[index-1].style.color = "#ccc";
-
-      this.bs.scrollToElement(
-        lrcBox.children[index-1],
-        300,
-        true,
-        true,
-        undefined
-      );
+      if (index >= 1) {
+        lrcBox.children[index - 1].style.color = "#ccc";
+        this.bs.scrollToElement(
+          lrcBox.children[index - 1],
+          300,
+          true,
+          true,
+          undefined
+        );
+      }
     },
 
     // 下一曲
