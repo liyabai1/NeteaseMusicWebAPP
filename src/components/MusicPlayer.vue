@@ -27,7 +27,7 @@
       </div>
       <div class="presBarBox">
         <span>{{ playedTime }}</span>
-        <div>
+        <div @click="changePlayedTime($event)" ref="progressBar">
           <div
             class="playedBox"
             ref="progressDOM"
@@ -42,8 +42,8 @@
     <div class="volumeCtrl">
       <div class="volBox">
         <i class="iconfont">&#xe638;</i>
-        <div class="volOutside">
-          <div class="vol"></div>
+        <div class="volOutside" ref="volBar" @click="changeVol($event)">
+          <div class="vol" :style="{ width: volWidth + '%' }"></div>
         </div>
       </div>
     </div>
@@ -56,11 +56,14 @@ export default {
     return {
       playedTime: 0,
       progressPer: 0,
+      volWidth: 50,
     };
   },
   mounted() {
-    setInterval(this.getPlayedTime, 500);
-    
+    // 正在播放
+    this.$store.state.GlobalAudio.audio.ontimeupdate = this.getPlayedTime;
+    // 播放结束
+    this.$store.state.GlobalAudio.audio.onended = this.nextSong;
   },
   methods: {
     getPlayedTime() {
@@ -96,7 +99,26 @@ export default {
       // 改变当前播放的信息 页面显示
       this.$store.commit("changeNowMusicInfo", { id, type: "next" });
     },
-    
+    // 点击进度条改变当前播放时间
+    changePlayedTime(event) {
+      const AUDIO = this.$store.state.GlobalAudio.audio;
+      const ALL_TIME = AUDIO.duration;
+      let offsetX = event.offsetX;
+      let allWidth = window.getComputedStyle(
+        this.$refs.progressBar,
+        null
+      ).width;
+      AUDIO.currentTime = ALL_TIME * (offsetX / parseFloat(allWidth));
+    },
+    // 点击音量条 改变音量大小
+    changeVol(event) {
+      let offsetX = event.offsetX;
+      let allWidth = window.getComputedStyle(this.$refs.volBar, null).width;
+      let per = offsetX / parseFloat(allWidth);
+      this.$store.state.GlobalAudio.audio.volume = per;
+      this.$store.state.FMAudio.audio.volume = per;
+      this.volWidth = Math.round(per * 100);
+    },
   },
   filters: {
     changeTime: function (time) {
@@ -180,16 +202,18 @@ export default {
       height: 3px;
       background-color: #4a4a4a;
       border-radius: 1px;
+      overflow: hidden;
       .playedBox {
         height: 100%;
         width: 0%;
         background-color: red;
+        border-radius: 3px;
       }
     }
     div:hover {
-      height: 5px;
+      height: 6px;
       cursor: pointer;
-      border-radius: 2px;
+      border-radius: 3px;
     }
     span {
       font-size: 10px;
