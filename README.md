@@ -65,6 +65,7 @@ npm run bulid
 
 ## 更新日志
 **2021.07.21**  添加了私人FM模块
+**2021.07.22**  增加了点击进度跳控制播放进度，点击音量条控制音量大小
 
 ## License
 [The MIT License (MIT)](https://github.com/liyabai1/NeteaseMusicWebAPP/blob/main/LICENSE)
